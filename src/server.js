@@ -1,38 +1,25 @@
+require("dotenv").config();
+
 const express = require("express");
-
 const mongoose = require("mongoose");
-
 const cors = require("cors");
-
 const http = require("http");
 
 const { Server } = require("socket.io");
-
-require("dotenv").config();
 
 // ==============================
 // ROUTES
 // ==============================
 const authRoutes = require("./routes/authRoutes");
-
 const jobRoutes = require("./routes/jobRoutes");
-
 const healthRoutes = require("./routes/healthRoutes");
-
 const applicationRoutes = require("./routes/applicationRoutes");
-
 const paymentRoutes = require("./routes/paymentRoutes");
-
 const reviewRoutes = require("./routes/reviewRoutes");
-
 const reportRoutes = require("./routes/reportRoutes");
-
 const profileRoutes = require("./routes/profileRoutes");
-
 const adminRoutes = require("./routes/adminRoutes");
-
 const messageRoutes = require("./routes/messageRoutes");
-
 const notificationRoutes = require("./routes/notificationRoutes");
 
 // ==============================
@@ -50,7 +37,7 @@ const server = http.createServer(app);
 // ==============================
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.CLIENT_URL,
 
     methods: ["GET", "POST", "PATCH", "DELETE"],
 
@@ -158,7 +145,7 @@ io.on("connection", (socket) => {
 // ==============================
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.CLIENT_URL,
 
     credentials: true,
   }),
