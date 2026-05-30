@@ -37,7 +37,7 @@ const server = http.createServer(app);
 // ==============================
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL,
+    origin: true,
 
     methods: ["GET", "POST", "PATCH", "DELETE"],
 
@@ -145,11 +145,18 @@ io.on("connection", (socket) => {
 // ==============================
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: [
+      "http://localhost:3000",
+      "https://servicehub-frontend-5256.vercel.app",
+    ],
+
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 
     credentials: true,
   }),
 );
+
+app.options("*", cors());
 
 app.use(express.json());
 
