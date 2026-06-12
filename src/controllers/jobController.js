@@ -141,10 +141,9 @@ exports.getJobs = async (req, res, next) => {
 // ===================================
 exports.getJobById = async (req, res, next) => {
   try {
-    const job = await Job.findById(req.params.id).populate(
-      "createdBy",
-      "name email role",
-    );
+    const job = await Job.findById(req.params.id)
+      .populate("createdBy", "name email role")
+      .populate("assignedTradesperson", "name email role");
 
     if (!job) {
       return res.status(404).json({
@@ -487,11 +486,11 @@ exports.approveCompletion = async (req, res, next) => {
 
     await job.save();
 
+    const io = req.app.get("io");
+
     const activeUsers = req.app.get("activeUsers");
 
     await sendPlatformHealthUpdate(io, activeUsers);
-
-    const io = req.app.get("io");
 
     await sendNotification(io, {
       receiver: job.assignedTradesperson,

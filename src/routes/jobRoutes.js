@@ -47,7 +47,27 @@ router.get("/:id", getJobById);
 router.post("/", protect, upload.array("images", 5), createJob);
 
 // ===================================
-// UPDATE STATUS
+// SCHEDULE JOB  (must be before generic /:id patch)
+// ===================================
+router.patch("/schedule/:id", protect, scheduleJob);
+
+// ===================================
+// COMPLETE JOB  (must be before generic /:id patch)
+// ===================================
+router.patch("/complete/:id", protect, completeJob);
+
+// ===================================
+// REQUEST COMPLETION  (must be before generic /:id patch)
+// ===================================
+router.patch("/:id/request-completion", protect, requestCompletion);
+
+// ===================================
+// APPROVE COMPLETION  (must be before generic /:id patch)
+// ===================================
+router.patch("/:id/approve-completion", protect, approveCompletion);
+
+// ===================================
+// UPDATE STATUS  (generic - keep last among PATCH routes)
 // ===================================
 router.patch("/:id", protect, updateJobStatus);
 
@@ -61,24 +81,5 @@ router.put("/:id", protect, updateJob);
 // ===================================
 router.delete("/:id", protect, deleteJob);
 
-// ===================================
-// SCHEDULE JOB
-// ===================================
-router.patch("/schedule/:id", protect, scheduleJob);
-
-// ===================================
-// COMPLETE JOB
-// ===================================
-router.patch("/complete/:id", protect, completeJob);
-
-// ===================================
-// REQUEST COMPLETION
-// ===================================
-router.patch("/:id/request-completion", protect, requestCompletion);
-
-// ===================================
-// APPROVE COMPLETION
-// ===================================
-router.patch("/:id/approve-completion", protect, approveCompletion);
-
 module.exports = router;
+
